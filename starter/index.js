@@ -62,6 +62,42 @@ const questionsMember = [
 ]
 
 
+//creating variable of nested inquirer for less code
+const inquirerNested = () => {
+    inquirer
+        .prompt(questionsMember)
+        .then((answers) => {
+            console.log("Saved details.");
+        })
+        .catch((error) => {
+            if (error.isTtyError) {
+                console.log(error)
+            } else {
+                console.log(error)
+            }
+        });
+}
+
+
+//different questions pushed to array: functions called inside the parent inquirer
+const engineerQ = () => {
+    questionsMember.push({
+        type: "input",
+        name: "memberGithub",
+        message: "What's the engineer's GitHub?"
+    });
+}
+
+const internQ = () => {
+    questionsMember.push({
+        type: "input",
+        name: "memberSchool",
+        message: "What's the intern's school?"
+    });
+}
+
+
+//prompting
 inquirer
   .prompt(questions)
   .then((answers) => {
@@ -69,80 +105,14 @@ inquirer
     if (answers.memberType === "None") {
         console.log("Saved details.");
         return;
+    } else if (answers.memberType === "Engineer") {
+        engineerQ();
+        inquirerNested();
     }
-    else if (answers.memberType === "Engineer") {
-        questionsMember.push({
-            type: "input",
-            name: "memberGithub",
-            message: "What's the engineer's GitHub?"
-        });
-        inquirer
-            .prompt(questionsMember)
-            .then((answers) => {
-                console.log("Saved details.");
-            })
-            .catch((error) => {
-                if (error.isTtyError) {
-                // Prompt couldn't be rendered in the current environment
-                } else {
-                // Something else went wrong
-                }
-            });
-    }
-    else if (answers.memberType === "Intern") {
-        questionsMember.push({
-            type: "input",
-            name: "memberSchool",
-            message: "What's the intern's school?"
-        });
-        inquirer
-            .prompt(questionsMember)
-            .then((answers) => {
-                console.log("Saved details.");
-            })
-            .catch((error) => {
-                if (error.isTtyError) {
-                // Prompt couldn't be rendered in the current environment
-                } else {
-                // Something else went wrong
-                }
-            });
-    }
-
-    // //if they decided to continue --->
-    // else if (answers.memberType !== "None") {
-    //     //run the new questionsMember array
-    //     inquirer
-    //         .prompt(questionsMember)
-    //         .then((answers) => {
-
-    //             //updating array based on the user input
-    //             if (answers.memberType === "Engineer") {
-    //                 questionsMember.push({
-    //                 type: "input",
-    //                 name: "memberGithub",
-    //                 message: "What's the engineer's GitHub?"
-    //             });
-    //             console.log("Saved details.");
-    //             }
-    //             //intern question update
-    //             if (answers.memberType === "Intern") {
-    //                 questionsMember.push({
-    //                 type: "input",
-    //                 name: "memberSchool",
-    //                 message: "What's the intern's school?"
-    //             });
-    //             console.log("Saved details.");
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             if (error.isTtyError) {
-    //                 console.log("Prompt couldn't be rendered in the current environment " + error);
-    //               } else {
-    //                 console.log("Something else went wrong " + error);
-    //               }
-    //         });}  
-    })
+    else {
+        internQ();
+        inquirerNested();
+    }})
   .catch((error) => {
     if (error.isTtyError) {
       console.log("Prompt couldn't be rendered in the current environment " + error);
@@ -150,6 +120,66 @@ inquirer
       console.log("Something else went wrong " + error);
     }
   });
+
+
+// const secondPhase = () => {
+
+//     inquirer
+//         .prompt(questionsMember)
+//         .then((answers) => {
+//             //prompting changes for engineer
+//             if (answers.memberType === "Engineer") {
+//                 questionsMember.push({
+//                     type: "input",
+//                     name: "memberGithub",
+//                     message: "What's the engineer's GitHub?"
+//                 });
+//                 // inquirer
+//                 //     .prompt(questionsMember)
+//                 //     .then((answers) => {
+//                 //         console.log("Saved details.");
+//                 //     })
+//                 //     .catch((error) => {
+//                 //         if (error.isTtyError) {
+//                 //             console.log(error)
+//                 //         } else {
+//                 //             console.log(error)
+//                 //         }
+//                 //     });
+
+//                 console.log("Saved details.");
+//             }
+//             //prompting changes for intern
+//             else if (questions.answers.memberType === "Intern") {
+//                 questionsMember.push({
+//                     type: "input",
+//                     name: "memberSchool",
+//                     message: "What's the intern's school?"
+//                 });
+//                 // inquirer
+//                 //     .prompt(questionsMember)
+//                 //     .then((answers) => {
+//                 //         console.log("Saved details.");
+//                 //     })
+//                 //     .catch((error) => {
+//                 //         if (error.isTtyError) {
+//                 //             console.log(error)
+//                 //         } else {
+//                 //             console.log(error)
+//                 //         }
+//                 //     });
+
+//                 console.log("Saved details.");
+//             }
+//         })
+//         .catch((error) => {
+//             if (error.isTtyError) {
+//                 console.log(error)
+//             } else {
+//                 console.log(error)
+//             }
+//         });
+// }
 
 
 
