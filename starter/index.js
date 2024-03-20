@@ -61,6 +61,7 @@ const questionsMember = [
     },
 ]
 
+
 inquirer
   .prompt(questions)
   .then((answers) => {
@@ -69,40 +70,79 @@ inquirer
         console.log("Saved details.");
         return;
     }
-    //if they decided to continue --->
-    else if (answers.memberType !== "None") {
-        //run the new questionsMember array
+    else if (answers.memberType === "Engineer") {
+        questionsMember.push({
+            type: "input",
+            name: "memberGithub",
+            message: "What's the engineer's GitHub?"
+        });
         inquirer
             .prompt(questionsMember)
             .then((answers) => {
-
-                //updating array based on the user input
-                if (answers.memberType === "Engineer") {
-                    questionsMember.push({
-                    type: "input",
-                    name: "memberGithub",
-                    message: "What's the engineer's GitHub?"
-                });
                 console.log("Saved details.");
-                }
-                //intern question update
-                if (answers.memberType === "Intern") {
-                    questionsMember.push({
-                    type: "input",
-                    name: "memberSchool",
-                    message: "What's the intern's school?"
-                });
-                console.log("Saved details.");
-                }
             })
             .catch((error) => {
                 if (error.isTtyError) {
-                    console.log("Prompt couldn't be rendered in the current environment " + error);
-                  } else {
-                    console.log("Something else went wrong " + error);
-                  }
-            });  
-    }})
+                // Prompt couldn't be rendered in the current environment
+                } else {
+                // Something else went wrong
+                }
+            });
+    }
+    else if (answers.memberType === "Intern") {
+        questionsMember.push({
+            type: "input",
+            name: "memberSchool",
+            message: "What's the intern's school?"
+        });
+        inquirer
+            .prompt(questionsMember)
+            .then((answers) => {
+                console.log("Saved details.");
+            })
+            .catch((error) => {
+                if (error.isTtyError) {
+                // Prompt couldn't be rendered in the current environment
+                } else {
+                // Something else went wrong
+                }
+            });
+    }
+
+    // //if they decided to continue --->
+    // else if (answers.memberType !== "None") {
+    //     //run the new questionsMember array
+    //     inquirer
+    //         .prompt(questionsMember)
+    //         .then((answers) => {
+
+    //             //updating array based on the user input
+    //             if (answers.memberType === "Engineer") {
+    //                 questionsMember.push({
+    //                 type: "input",
+    //                 name: "memberGithub",
+    //                 message: "What's the engineer's GitHub?"
+    //             });
+    //             console.log("Saved details.");
+    //             }
+    //             //intern question update
+    //             if (answers.memberType === "Intern") {
+    //                 questionsMember.push({
+    //                 type: "input",
+    //                 name: "memberSchool",
+    //                 message: "What's the intern's school?"
+    //             });
+    //             console.log("Saved details.");
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             if (error.isTtyError) {
+    //                 console.log("Prompt couldn't be rendered in the current environment " + error);
+    //               } else {
+    //                 console.log("Something else went wrong " + error);
+    //               }
+    //         });}  
+    })
   .catch((error) => {
     if (error.isTtyError) {
       console.log("Prompt couldn't be rendered in the current environment " + error);
@@ -116,23 +156,3 @@ inquirer
 
 
 
-// if (answers.memberType === "None") {
-//     console.log("Saved details.");
-//     return;
-// }
-// if (answers.memberType === "Engineer") {
-//     questionsMember.push({
-//         type: "input",
-//         name: "memberGithub",
-//         message: "What's the engineer's GitHub?"
-//     });
-//     console.log("Saved details.");
-// }
-// if (answers.memberType === "Intern") {
-//     questionsMember.push({
-//         type: "input",
-//         name: "memberSchool",
-//         message: "What's the intern's school?"
-//     });
-//     console.log("Saved details.");
-// }
