@@ -1,20 +1,14 @@
-// const Manager = require("./lib/Manager");
-// const Engineer = require("./lib/Engineer");
-// const Intern = require("./lib/Intern");
+//new attempt THIS ONE WORKS
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-const Employee = require("./lib/Employee.js");
 
-// const OUTPUT_DIR = path.resolve(__dirname, "output");
-// const outputPath = path.join(OUTPUT_DIR, "team.html");
+let team = [];
 
-// const render = require("./src/page-template.js");
-
-
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
-
-const questions = [
+const managerArr = [
     {
         type: "input",
         name: "managerName",
@@ -34,41 +28,110 @@ const questions = [
         type: "input",
         name: "managerOfficeNumber",
         message: "What's the team manager's office number?"
-    },
+    }
+];
+
+var addMemberArr = [
     {
         type: "list",
         name: "memberType",
         message: "What type of team member would you like to add?",
         choices: ["Engineer", "Intern", "None"]
     }
-]
+];
 
-const questionsMember = [
+var engineerArr = [
     {
         type: "input",
         name: "memberName",
-        message: "What's the member's name?"
+        message: "What's the engineer's name?"
     },
     {
         type: "input",
         name: "memberId",
-        message: "What's the member's ID?"
+        message: "What's the engineer's ID?"
     },
     {
         type: "input",
         name: "memberEmail",
-        message: "What's the member's email?"
+        message: "What's the engineer's email?"
     },
-]
+    {
+        type: "input",
+        name: "memberGithub",
+        message: "What's the engineer's GitHub?"
+    }
+];
 
+var internArr = [
+    {
+        type: "input",
+        name: "memberName",
+        message: "What's the intern's name?"
+    },
+    {
+        type: "input",
+        name: "memberId",
+        message: "What's the intern's ID?"
+    },
+    {
+        type: "input",
+        name: "memberEmail",
+        message: "What's the intern's email?"
+    },
+    {
+        type: "input",
+        name: "memberSchool",
+        message: "What's the intern's school?"
+    }
+];
 
-//creating variable of nested inquirer for less code
-const inquirerNested = () => {
+const addMember= () => {
     inquirer
-        .prompt(questionsMember)
+        .prompt(addMemberArr)
         .then((answers) => {
-            console.log("Saved details.");
-        })
+            //checking to see if they wish to continue
+            if (answers.memberType === "None") {
+                console.log("Saved details.");
+                return;
+            } 
+            //pushing specific engineer question
+            else if (answers.memberType === "Engineer") {
+                inquirer
+                .prompt(engineerArr)
+                .then((answers) => {
+                    console.log("Saved details.");
+                    let engineer = new Engineer(data.name, data.email, data.github);
+                    team.push(engineer);
+                    addMember();
+                })
+                .catch((error) => {
+                    if (error.isTtyError) {
+                        console.log(error)
+                    } else {
+                        console.log(error)
+                    }
+                });
+            }
+            //pushing specific intern question
+            else if (answers.memberType === "Intern") {
+                inquirer
+                .prompt(internArr)
+                .then((answers) => {
+                    console.log("Saved details.");
+                    let intern = new Intern(data.name, data.email, data.school);
+                    team.push(intern);
+                    addMember();
+                })
+                .catch((error) => {
+                    if (error.isTtyError) {
+                        console.log(error)
+                    } else {
+                        console.log(error)
+                    }
+                });
+            
+            }})
         .catch((error) => {
             if (error.isTtyError) {
                 console.log(error)
@@ -78,99 +141,14 @@ const inquirerNested = () => {
         });
 }
 
-
-//different questions pushed to array: functions called inside the parent inquirer
-const engineerQ = () => {
-    questionsMember.push({
-        type: "input",
-        name: "memberGithub",
-        message: "What's the engineer's GitHub?"
-    });
-}
-
-const internQ = () => {
-    questionsMember.push({
-        type: "input",
-        name: "memberSchool",
-        message: "What's the intern's school?"
-    });
-}
-
-
-//prompting
-inquirer
-  .prompt(questions)
-  .then((answers) => {
-    //checking to see if they wish to continue
-    if (answers.memberType === "None") {
-        console.log("Saved details.");
-        return;
-    } else if (answers.memberType === "Engineer") {
-        engineerQ();
-        inquirerNested();
-    }
-    else {
-        internQ();
-        inquirerNested();
-    }})
-  .catch((error) => {
-    if (error.isTtyError) {
-      console.log("Prompt couldn't be rendered in the current environment " + error);
-    } else {
-      console.log("Something else went wrong " + error);
-    }
-  });
-
-
-// const secondPhase = () => {
-
+// const inquirerManager = () => {
 //     inquirer
-//         .prompt(questionsMember)
+//         .prompt(managerArr)
 //         .then((answers) => {
-//             //prompting changes for engineer
-//             if (answers.memberType === "Engineer") {
-//                 questionsMember.push({
-//                     type: "input",
-//                     name: "memberGithub",
-//                     message: "What's the engineer's GitHub?"
-//                 });
-//                 // inquirer
-//                 //     .prompt(questionsMember)
-//                 //     .then((answers) => {
-//                 //         console.log("Saved details.");
-//                 //     })
-//                 //     .catch((error) => {
-//                 //         if (error.isTtyError) {
-//                 //             console.log(error)
-//                 //         } else {
-//                 //             console.log(error)
-//                 //         }
-//                 //     });
-
-//                 console.log("Saved details.");
-//             }
-//             //prompting changes for intern
-//             else if (questions.answers.memberType === "Intern") {
-//                 questionsMember.push({
-//                     type: "input",
-//                     name: "memberSchool",
-//                     message: "What's the intern's school?"
-//                 });
-//                 // inquirer
-//                 //     .prompt(questionsMember)
-//                 //     .then((answers) => {
-//                 //         console.log("Saved details.");
-//                 //     })
-//                 //     .catch((error) => {
-//                 //         if (error.isTtyError) {
-//                 //             console.log(error)
-//                 //         } else {
-//                 //             console.log(error)
-//                 //         }
-//                 //     });
-
-//                 console.log("Saved details.");
-//             }
+//             console.log("Saved details.");
+//             let manager = new Manager(data.name, data.email, data.office);
+//             team.push(manager)
+//             addMember();
 //         })
 //         .catch((error) => {
 //             if (error.isTtyError) {
@@ -179,10 +157,7 @@ inquirer
 //                 console.log(error)
 //             }
 //         });
+//     addMember();
 // }
-
-
-
-
-
-
+// 
+// inquirerManager();
